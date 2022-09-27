@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <arg name="map_file" default="$(find maps_glennan)/maps/glennan5_map.yaml" />
+  <arg name="bag_file" default="$(find ros_bag_testing)/bag/glennan_5_complete.bag" />
+  <arg name="additional_bag_args" default="/tf_trajectory:=/tf" />
+
+  <!-- <include file="$(find navvis_description)/launch/description_rviz.launch"> -->
+  <include file="$(find navvis_description)/launch/description_rviz.launch">
+    <arg name="use_xacro" value="true" />
+    <arg name="file" value=" $(find ros_bag_testing)/urdf/desc.xacro" />
+    <arg name="gui" value="false" />
+    <arg name="use_robot_state_publisher" value="false" />
+    <arg name="rviz_config_file" value="$(find ros_bag_testing)/config/config.rviz" />
+  </include>
+
+  <node pkg="map_server" type="map_server" name="map_server" args="$(arg map_file)" />
+  <node pkg="rosbag" type="play" name="rosbag" args="$(arg bag_file)  $(arg additional_bag_args)" />
+</launch>
